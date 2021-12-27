@@ -1,0 +1,17 @@
+{
+  "publisherId": "azuresentinel",
+  "offerId": "azure-sentinel-solution-fsecure",
+  "firstPublishDate": "2021-12-27",
+  "lastPublishDate": "2021-12-27",
+  "providers": ["F-Secure"],
+  "categories": {
+    "domains" : ["Security - Network"],
+    "verticals": []
+  },
+  "support": {
+    "name": "Microsoft Corporation",
+    "email": "support@microsoft.com",
+    "tier": "Microsoft",
+    "link": "https://support.microsoft.com"
+  }
+}
