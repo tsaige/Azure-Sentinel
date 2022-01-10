@@ -1,33 +1,32 @@
 {
-  "id": "FSecureElementsConnector",
-  "title": "F-Secure Elements Connector",
+  "id": "ProviderNameApplianceName",
+  "title": "F-Secure Data Connector",
   "publisher": "F-Secure",
-  "descriptionMarkdown": "The [Trend Micro Apex One](https://www.trendmicro.com/en_us/business/products/user-protection/sps/endpoint.html) data connector provides the capability to ingest [Trend Micro Apex One events](https://docs.trendmicro.com/en-us/enterprise/trend-micro-apex-central-2019-online-help/appendices/syslog-mapping-cef.aspx) into Azure Sentinel. Refer to [Trend Micro Apex Central](https://docs.trendmicro.com/en-us/enterprise/trend-micro-apex-central-2019-online-help/preface_001.aspx) for more information.",
-  "additionalRequirementBanner": "This data connector depends on a parser based on Kusto Function to work as expected [**TMApexOneEvent**](https://aka.ms/sentinel-TMApexOneEvent-parser) which is deployed with the Azure Sentinel Solution.",
+  "descriptionMarkdown": "Common Event Format (CEF) is an industry standard format on top of Syslog messages, used by many security vendors to allow event interoperability among different platforms. By connecting your CEF logs to Azure Sentinel, you can take advantage of search & correlation, alerting, and threat intelligence enrichment for each log.",
   "graphQueries": [
     {
       "metricName": "Total data received",
-      "legend": "ElementsConnector",
-      "baseQuery": "CommonSecurityLog"
+      "legend": "DATATYPE_NAME",
+      "baseQuery": "CommonSecurityLog\n| where DeviceVendor == \"PROVIDER NAME\"\n| where DeviceProduct == \"APPLIANCE NAME\""
     }
   ],
   "sampleQueries": [
     {
-      "description" : "All logs",
-      "query": "\nCommonSecurityLog\n| sort by TimeGenerated"
+      "description" : "Events count by source username",
+      "query": "CommonSecurityLog\n| summarize count() by SourceUserName\n| render piechart"
     }
   ],
   "dataTypes": [
     {
-      "name": "CommonSecurityLog (F-Secure Elements Connector)",
-      "lastDataReceivedQuery": "CommonSecurityLog\n | summarize Time = max(TimeGenerated)\n| where isnotempty(Time)"
+      "name": "CommonSecurityLog (F-Secure Elements)",
+      "lastDataReceivedQuery": "CommonSecurityLog\n| where DeviceVendor == \"PROVIDER NAME\"\n| where DeviceProduct == \"APPLIANCE NAME\"\n| summarize Time = max(TimeGenerated)\n| where isnotempty(Time)"
     }
   ],
   "connectivityCriterias": [
     {
       "type": "IsConnectedQuery",
       "value": [
-        "TMApexOneEvent\n            | summarize LastLogReceived = max(TimeGenerated)\n            | project IsConnected = LastLogReceived > ago(30d)"
+        "CommonSecurityLog\n| where DeviceVendor == \"PROVIDER NAME\"\n| where DeviceProduct == \"APPLIANCE NAME\"\n| summarize LastLogReceived = max(TimeGenerated)\n| project IsConnected = LastLogReceived > ago(30d)"
       ]
     }
   ],
@@ -43,8 +42,8 @@
         "providerDisplayName": "Workspace",
         "scope": "Workspace",
         "requiredPermissions": {
-          "write": true,
           "read": true,
+          "write": true,
           "delete": true
         }
       },
@@ -60,18 +59,6 @@
     ]
   },
   "instructionSteps": [
-    {
-      "title": "",
-      "description": ">This data connector depends on a parser based on a Kusto Function to work as expected [**TMApexOneEvent**](https://aka.ms/sentinel-TMApexOneEvent-parser) which is deployed with the Azure Sentinel Solution.",
-      "instructions": [
-      ]
-    },
-    {
-      "title": "",
-      "description": ">**NOTE:** This data connector has been developed using Trend Micro Apex Central 2019",
-      "instructions": [
-      ]
-    },
     {
       "title": "1. Linux Syslog agent configuration",
       "description": "Install and configure the Linux agent to collect your Common Event Format (CEF) Syslog messages and forward them to Azure Sentinel.\n\n> Notice that the data from all regions will be stored in the selected workspace",
@@ -100,28 +87,26 @@
       ]
     },
     {
-      "title": "2. Forward Common Event Format (CEF) logs to Syslog agent",
-      "description": "[Follow these steps](https://docs.trendmicro.com/en-us/enterprise/trend-micro-apex-central-2019-online-help/detections/logs_001/syslog-forwarding.aspx) to configure Apex Central sending alerts via syslog. While configuring, on step 6, select the log format **CEF**."
-    },
-    {
-      "title": "3. Validate connection",
-      "description": "Follow the instructions to validate your connectivity:\n\nOpen Log Analytics to check if the logs are received using the CommonSecurityLog schema.\n\n>It may take about 20 minutes until the connection streams data to your workspace.\n\nIf the logs are not received, run the following connectivity validation script:\n\n> 1. Make sure that you have Python on your machine using the following command: python -version\n\n>2. You must have elevated permissions (sudo) on your machine",
-      "instructions": [
-        {
-          "parameters": {
-            "fillWith": [
-              "WorkspaceId"
-            ],
-            "label": "Run the following command to validate your connectivity:",
-            "value": "sudo wget  -O cef_troubleshoot.py https://raw.githubusercontent.com/Azure/Azure-Sentinel/master/DataConnectors/CEF/cef_troubleshoot.py&&sudo python cef_troubleshoot.py  {0}"
-          },
-          "type": "CopyableLabel"
-        }
-      ]
-    },
-    {
-      "title": "4. Secure your machine ",
-      "description": "Make sure to configure the machine's security according to your organization's security policy\n\n\n[Learn more >](https://aka.ms/SecureCEF)"
+      "title": "2. Install Elements Connector for Linux and follow admin guide instruction to enable event forwarding",
+      "description": "https://help.f-secure.com/product.html#business/connector/latest/en/concept_3BE93669AFF245E8B726A57A60CB451E-latest-en"
     }
-  ]
+  ],
+  "metadata": {
+    "id": "Unique Identifier (GUID) used to identify dependencies and content from solutions or community.",
+    "version": "1.0.0",
+    "kind": "dataConnector",
+    "source": {
+      "kind": "solution",
+      "name": "F-Secure Elements"
+    },
+    "author": {
+      "name": "rd-team-yoda@f-secure.com"
+    },
+    "support": {
+      "tier": "developer",
+      "name": "F-Secure Elements",
+      "email": "rd-team-yoda@f-secure.com",
+      "link":"Optional: Link for support help, like to support page to open a ticket etc"
+    }
+  }
 }
