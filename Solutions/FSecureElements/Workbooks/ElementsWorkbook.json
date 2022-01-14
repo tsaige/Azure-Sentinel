@@ -2,22 +2,159 @@
   "version": "Notebook/1.0",
   "items": [
     {
-      "type": 1,
+      "type": 9,
       "content": {
-        "json": "## New workbook\n---\n\nHello world tsaige workbook."
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "a9e96138-5210-4bc3-9570-7e6b14fbb99e",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeframeParameter",
+            "label": "Time frame",
+            "type": 4,
+            "isRequired": true,
+            "value": {
+              "durationMs": 2592000000
+            },
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                },
+                {
+                  "durationMs": 2592000000
+                }
+              ],
+              "allowCustom": true
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            }
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
       },
-      "name": "text - 2"
+      "name": "parameters - 0"
     },
     {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "union withsource=_TableName *\n| summarize Count=count() by _TableName\n| render barchart",
+        "query": "FSecureElements\r\n| sort by TimeGenerated\r\n| project TimeGenerated, Activity\r\n| limit 250",
         "size": 1,
+        "title": "Latest events for {TimeframeParameter:label}",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "timeContextFromParameter": "TimeframeParameter",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "sortBy": []
+      },
+      "customWidth": "25",
+      "name": "query-2",
+      "styleSettings": {
+        "maxWidth": "50"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "FSecureElements\r\n| summarize count() by Activity\r\n| render barchart\r\n",
+        "size": 0,
+        "title": "Events summary by type for {TimeframeParameter:label}",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "timeContextFromParameter": "TimeframeParameter",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
       "name": "query - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "FSecureElements\r\n| where TimeGenerated {TimeframeParameter}\r\n| summarize count() by bin(TimeGenerated, 1h)\r\n| render timechart",
+        "size": 0,
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "timeContextFromParameter": "TimeframeParameter",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "query - 3"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "FSecureElements\r\n| where InfectionName != \"\"\r\n| project InfectionName\r\n| summarize count() by InfectionName\r\n| limit 10\r\n| render piechart",
+        "size": 0,
+        "title": "Top 10 detected malwares",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "timeContextFromParameter": "TimeframeParameter",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "customWidth": "50",
+      "name": "query - 4",
+      "styleSettings": {
+        "maxWidth": "50"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "FSecureElements\r\n| where InfectionType != \"\"\r\n| summarize count() by Computer\r\n| limit 10\r\n| render piechart",
+        "size": 0,
+        "title": "Top 10 infected devices for {TimeframeParameter:label}",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "timeContextFromParameter": "TimeframeParameter",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "customWidth": "50",
+      "name": "query - 5",
+      "styleSettings": {
+        "maxWidth": "50"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "FSecureElements\r\n| where InfectionType != \"\"\r\n| summarize count() by AccountName\r\n| limit 10\r\n| render piechart",
+        "size": 0,
+        "title": "Top 10 infected customers",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeframeParameter",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "customWidth": "50",
+      "name": "query - 6",
+      "styleSettings": {
+        "maxWidth": "50"
+      }
     }
   ],
   "fallbackResourceIds": [
