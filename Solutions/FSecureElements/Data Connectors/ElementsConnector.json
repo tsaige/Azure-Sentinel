@@ -12,8 +12,28 @@
   ],
   "sampleQueries": [
     {
-      "description" : "Events count by source username",
-      "query": "CommonSecurityLog\n| summarize count() by SourceUserName\n| render piechart"
+      "description" : "Summarize events received by activity (last 7 days)",
+      "query": "FSecureElements\n| where TimeGenerated > ago(7d)\n| summarize count() by Activity"
+    },
+    {
+      "description" : "List events from Real-time Protection",
+      "query": "FSecureElements\n| where Activity == \"DeepGuard event\"\n| sort by TimeGenerated"
+    },
+    {
+      "description" : "Top 5 malware (last 7 days)",
+      "query": "FSecureElements\n| where TimeGenerated > ago(7d)\n| where InfectionType == \"Malware\"\n| summarize count() by InfectionName\n| limit 5\n| render piechart"
+    },
+    {
+      "description" : "Top 10 devices at risk (last 7 days)",
+      "query": "FSecureElements\n| where TimeGenerated > ago(7d)\n| summarize count() by Computer\n| render barchart"
+    },
+    {
+      "description" : "Most infected devices (last 7 days)",
+      "query": "FSecureElements\n| where TimeGenerated > ago(7d)\n| where isnotempty(InfectionType)\n| summarize count() by Computer\n"
+    },
+    {
+      "description" : "Most infected customers (last 7 days)",
+      "query": "FSecureElements\n| where TimeGenerated > ago(7d)\n| where isnotempty(InfectionType)\n| summarize count() by AccountName"
     }
   ],
   "dataTypes": [
