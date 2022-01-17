@@ -79,13 +79,17 @@
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
-      "name": "query - 2"
+      "customWidth": "75",
+      "name": "query - 2",
+      "styleSettings": {
+        "maxWidth": "75"
+      }
     },
     {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "FSecureElements\r\n| where TimeGenerated {TimeframeParameter}\r\n| summarize count() by bin(TimeGenerated, 1h)\r\n| render timechart",
+        "query": "FSecureElements\r\n| where TimeGenerated {TimeframeParameter}\r\n| summarize count() by bin(TimeGenerated, 15m)\r\n| project-rename Events=count_\r\n| render timechart",
         "size": 0,
         "timeContext": {
           "durationMs": 2592000000
@@ -100,49 +104,9 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "FSecureElements\r\n| where InfectionName != \"\"\r\n| project InfectionName\r\n| summarize count() by InfectionName\r\n| limit 10\r\n| render piechart",
-        "size": 0,
-        "title": "Top 10 detected malwares",
-        "timeContext": {
-          "durationMs": 2592000000
-        },
-        "timeContextFromParameter": "TimeframeParameter",
-        "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces"
-      },
-      "customWidth": "50",
-      "name": "query - 4",
-      "styleSettings": {
-        "maxWidth": "50"
-      }
-    },
-    {
-      "type": 3,
-      "content": {
-        "version": "KqlItem/1.0",
-        "query": "FSecureElements\r\n| where InfectionType != \"\"\r\n| summarize count() by Computer\r\n| limit 10\r\n| render piechart",
+        "query": "FSecureElements\r\n| where isnotempty(InfectionType)\r\n| summarize count() by Computer\r\n| project-rename Infections=count_, \r\n                 Device=Computer\r\n| sort by Infections\r\n| limit 10\r\n",
         "size": 0,
         "title": "Top 10 infected devices for {TimeframeParameter:label}",
-        "timeContext": {
-          "durationMs": 2592000000
-        },
-        "timeContextFromParameter": "TimeframeParameter",
-        "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces"
-      },
-      "customWidth": "50",
-      "name": "query - 5",
-      "styleSettings": {
-        "maxWidth": "50"
-      }
-    },
-    {
-      "type": 3,
-      "content": {
-        "version": "KqlItem/1.0",
-        "query": "FSecureElements\r\n| where InfectionType != \"\"\r\n| summarize count() by AccountName\r\n| limit 10\r\n| render piechart",
-        "size": 0,
-        "title": "Top 10 infected customers",
         "timeContext": {
           "durationMs": 0
         },
@@ -150,10 +114,50 @@
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces"
       },
-      "customWidth": "50",
+      "customWidth": "33",
+      "name": "query - 5",
+      "styleSettings": {
+        "maxWidth": "33"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "FSecureElements\r\n| where isnotempty(InfectionType)\r\n| summarize count() by AccountName\r\n| project-rename Infections=count_\r\n| sort by Infections\r\n| limit 10",
+        "size": 0,
+        "title": "Top 10 infected customers for {TimeframeParameter:label}",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeframeParameter",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "customWidth": "33",
       "name": "query - 6",
       "styleSettings": {
-        "maxWidth": "50"
+        "maxWidth": "33"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "FSecureElements\r\n| where InfectionType == \"Malware\"\r\n| summarize count() by InfectionName\r\n| project-rename Number=count_\r\n| sort by Number\r\n| limit 10",
+        "size": 0,
+        "title": "Top 10 detected malwares for {TimeframeParameter:label}",
+        "timeContext": {
+          "durationMs": 0
+        },
+        "timeContextFromParameter": "TimeframeParameter",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "customWidth": "33",
+      "name": "query - 4",
+      "styleSettings": {
+        "maxWidth": "33"
       }
     }
   ],
