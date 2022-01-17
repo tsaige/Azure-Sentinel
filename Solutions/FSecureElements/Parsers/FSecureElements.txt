@@ -1,0 +1,6 @@
+// Usage Instructions:
+CommonSecurityLog
+| where DeviceVendor =~ "F-Secure"
+| project-rename InfectionName = DeviceCustomString2,
+                 InfectionType = DeviceCustomString2Label
+| extend AccountName = extract(@'accountName=(.*?);', 1, AdditionalExtensions)
