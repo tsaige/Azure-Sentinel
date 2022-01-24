@@ -57,6 +57,9 @@
         "timeContextFromParameter": "TimeframeParameter",
         "queryType": 0,
         "resourceType": "microsoft.operationalinsights/workspaces",
+        "gridSettings": {
+          "filter": true
+        },
         "sortBy": []
       },
       "customWidth": "25",
@@ -77,7 +80,10 @@
         },
         "timeContextFromParameter": "TimeframeParameter",
         "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces"
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "chartSettings": {
+          "xAxis": "Activity"
+        }
       },
       "customWidth": "75",
       "name": "query - 2",
@@ -89,10 +95,10 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "FSecureElements\r\n| where TimeGenerated {TimeframeParameter}\r\n| summarize count() by bin(TimeGenerated, 15m)\r\n| project-rename Events=count_\r\n| render timechart",
+        "query": "FSecureElements\r\n| make-series Events=count() default=0 on TimeGenerated from {TimeframeParameter:start} to {TimeframeParameter:end} step 15m\r\n| render timechart",
         "size": 0,
         "timeContext": {
-          "durationMs": 2592000000
+          "durationMs": 0
         },
         "timeContextFromParameter": "TimeframeParameter",
         "queryType": 0,
@@ -108,11 +114,22 @@
         "size": 0,
         "title": "Top 10 infected devices for {TimeframeParameter:label}",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeframeParameter",
         "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces"
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Infections",
+              "formatter": 8,
+              "formatOptions": {
+                "palette": "yellowOrangeRed"
+              }
+            }
+          ]
+        }
       },
       "customWidth": "33",
       "name": "query - 5",
@@ -132,7 +149,18 @@
         },
         "timeContextFromParameter": "TimeframeParameter",
         "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces"
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Infections",
+              "formatter": 8,
+              "formatOptions": {
+                "palette": "yellowOrangeRed"
+              }
+            }
+          ]
+        }
       },
       "customWidth": "33",
       "name": "query - 6",
@@ -148,11 +176,26 @@
         "size": 0,
         "title": "Top 10 detected malwares for {TimeframeParameter:label}",
         "timeContext": {
-          "durationMs": 0
+          "durationMs": 2592000000
         },
         "timeContextFromParameter": "TimeframeParameter",
         "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces"
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Number",
+              "formatter": 8,
+              "formatOptions": {
+                "palette": "yellowOrangeRed",
+                "compositeBarSettings": {
+                  "labelText": "",
+                  "columnSettings": []
+                }
+              }
+            }
+          ]
+        }
       },
       "customWidth": "33",
       "name": "query - 4",
