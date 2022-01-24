@@ -4,3 +4,5 @@ CommonSecurityLog
 | project-rename InfectionName = DeviceCustomString2,
                  InfectionType = DeviceCustomString2Label
 | extend AccountName = extract(@'accountName=(.*?);', 1, AdditionalExtensions)
+| extend FilePath = extract(@'filePath=(.*?);', 1, AdditionalExtensions)
+| extend AlertType = extract(@'alertType=(.*?);', 1, AdditionalExtensions)

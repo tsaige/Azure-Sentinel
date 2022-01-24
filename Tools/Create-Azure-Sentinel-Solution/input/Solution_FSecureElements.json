@@ -1,0 +1,20 @@
+{
+  "Name": "FSecureElements",
+  "Author": "F-Secure rd-team-yoda@f-secure.com",
+  "Logo": "<img src=\"https://raw.githubusercontent.com/tsaige/Azure-Sentinel/c8cd9dbdf0a6920477b5c6ccf6b4910ae19635f4/Logos/FSecure-horizontal-logo.svg\" width=\"75px\" height=\"75px\">",
+  "Description": "Hello worlds F-Secure Elements description.",
+  "WorkbookDescription": "Hello world F-Secure Elements workbook.",
+  "Data Connectors": [
+    "Data Connectors/ElementsConnector.json"
+  ],
+  "Workbooks": [
+    "Workbooks/ElementsWorkbook.json"
+  ],
+  "Parsers": [
+    "Parsers/FSecureElements.txt"
+  ],
+  "BasePath": "https://raw.githubusercontent.com/tsaige/Azure-Sentinel/first-fsec-solution/Solutions/FSecureElements",
+  "Version": "1.0.0",
+  "Metadata": "SolutionMetadata.json"
+}
+  
