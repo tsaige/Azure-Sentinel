@@ -72,11 +72,11 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "FSecureElements\r\n| summarize count() by Activity\r\n| render barchart\r\n",
+        "query": "FSecureElements\r\n| summarize count() by Activity\r\n| sort by Activity\r\n| render barchart\r\n",
         "size": 0,
         "title": "Events summary by type for {TimeframeParameter:label}",
         "timeContext": {
-          "durationMs": 2592000000
+          "durationMs": 0
         },
         "timeContextFromParameter": "TimeframeParameter",
         "queryType": 0,
@@ -141,7 +141,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "FSecureElements\r\n| where isnotempty(InfectionType)\r\n| summarize count() by AccountName\r\n| project-rename Infections=count_\r\n| sort by Infections\r\n| limit 10",
+        "query": "FSecureElements\r\n| where IsInfection == true\r\n| summarize count() by AccountName\r\n| project-rename Infections=count_\r\n| sort by Infections\r\n| limit 10",
         "size": 0,
         "title": "Top 10 infected customers for {TimeframeParameter:label}",
         "timeContext": {
@@ -172,11 +172,11 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "FSecureElements\r\n| where InfectionType == \"Malware\"\r\n| summarize count() by InfectionName\r\n| project-rename Number=count_\r\n| sort by Number\r\n| limit 10",
+        "query": "FSecureElements\r\n| where IsInfection == true\r\n| summarize count() by InfectionName, InfectionType\r\n| project-rename Number=count_\r\n| sort by Number\r\n| limit 10",
         "size": 0,
         "title": "Top 10 detected malwares for {TimeframeParameter:label}",
         "timeContext": {
-          "durationMs": 2592000000
+          "durationMs": 0
         },
         "timeContextFromParameter": "TimeframeParameter",
         "queryType": 0,

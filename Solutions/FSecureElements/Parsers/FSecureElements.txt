@@ -1,8 +1,9 @@
 // Usage Instructions:
 CommonSecurityLog
 | where DeviceVendor =~ "F-Secure"
-| project-rename InfectionName = DeviceCustomString2,
-                 InfectionType = DeviceCustomString2Label
+| project-rename InfectionName = DeviceCustomString2
+| extend IsInfection = DeviceCustomString2Label == "Malware"
+| extend InfectionType = extract(@'infectionType=(.*?);', 1, AdditionalExtensions)
 | extend AccountName = extract(@'accountName=(.*?);', 1, AdditionalExtensions)
 | extend FilePath = extract(@'filePath=(.*?);', 1, AdditionalExtensions)
 | extend AlertType = extract(@'alertType=(.*?);', 1, AdditionalExtensions)

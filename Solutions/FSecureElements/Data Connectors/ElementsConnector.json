@@ -1,5 +1,5 @@
 {
-  "id": "ProviderNameApplianceName",
+  "id": "FSecureElementsConnector",
   "title": "F-Secure Data Connector",
   "publisher": "F-Secure",
   "descriptionMarkdown": "Common Event Format (CEF) is an industry standard format on top of Syslog messages, used by many security vendors to allow event interoperability among different platforms. By connecting your CEF logs to Azure Sentinel, you can take advantage of search & correlation, alerting, and threat intelligence enrichment for each log.",
@@ -21,7 +21,7 @@
     },
     {
       "description" : "Top 5 malware (last 7 days)",
-      "query": "FSecureElements\n| where TimeGenerated > ago(7d)\n| where InfectionType == \"Malware\"\n| summarize count() by InfectionName\n| limit 5\n| render piechart"
+      "query": "FSecureElements\n| where TimeGenerated > ago(7d)\n| where IsInfection == true\n| summarize count() by InfectionName\n| limit 5\n| render piechart"
     },
     {
       "description" : "Top 10 devices at risk (last 7 days)",
@@ -29,11 +29,11 @@
     },
     {
       "description" : "Most infected devices (last 7 days)",
-      "query": "FSecureElements\n| where TimeGenerated > ago(7d)\n| where isnotempty(InfectionType)\n| summarize count() by Computer\n"
+      "query": "FSecureElements\n| where TimeGenerated > ago(7d)\n| where IsInfection == true\n| summarize count() by Computer"
     },
     {
       "description" : "Most infected customers (last 7 days)",
-      "query": "FSecureElements\n| where TimeGenerated > ago(7d)\n| where isnotempty(InfectionType)\n| summarize count() by AccountName"
+      "query": "FSecureElements\n| where TimeGenerated > ago(7d)\n| where IsInfection == true\n| summarize count() by AccountName"
     }
   ],
   "dataTypes": [
