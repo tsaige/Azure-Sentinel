@@ -1,9 +1,13 @@
-// Usage Instructions:
+// Usage Instructions: todo
 CommonSecurityLog
 | where DeviceVendor =~ "F-Secure"
-| project-rename InfectionName = DeviceCustomString2
+| project-rename InfectionName = DeviceCustomString2,
+                 AlertType = DeviceEventClassID
 | extend IsInfection = DeviceCustomString2Label == "Malware"
 | extend InfectionType = extract(@'infectionType=(.*?);', 1, AdditionalExtensions)
 | extend AccountName = extract(@'accountName=(.*?);', 1, AdditionalExtensions)
 | extend FilePath = extract(@'filePath=(.*?);', 1, AdditionalExtensions)
-| extend AlertType = extract(@'alertType=(.*?);', 1, AdditionalExtensions)
+| extend FileRarity = extract(@'rarity=(.*?);', 1, AdditionalExtensions)
+| extend Reputation = extract(@'reputation=(.*?);', 1, AdditionalExtensions)
+| extend EventClass = extract(@'reputation=(.*?);', 1, AdditionalExtensions)
+| extend CompleteAlertType = extract(@'alertType=(.*?);', 1, AdditionalExtensions)
